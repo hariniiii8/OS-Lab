@@ -1,0 +1,128 @@
+#include <stdio.h>
+
+void matrixAddition(int rows, int cols, int matrix1[rows][cols], int matrix2[rows][cols], int result[rows][cols])
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            result[i][j] = matrix1[i][j] + matrix2[i][j];
+        }
+    }
+}
+
+void matrixSubtraction(int rows, int cols, int matrix1[rows][cols], int matrix2[rows][cols], int result[rows][cols])
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            result[i][j] = matrix1[i][j] - matrix2[i][j];
+        }
+    }
+}
+
+void matrixMultiplication(int rows1, int cols1, int rows2, int cols2, int matrix1[rows1][cols1], int matrix2[rows2][cols2], int result[rows1][cols2])
+{
+    for (int i = 0; i < rows1; i++)
+    {
+        for (int j = 0; j < cols2; j++)
+        {
+            result[i][j] = 0;
+            for (int k = 0; k < cols1; k++)
+            {
+                result[i][j] += matrix1[i][k] * matrix2[k][j];
+            }
+        }
+    }
+}
+
+void matrixTranspose(int rows, int cols, int matrix[rows][cols], int result[cols][rows])
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            result[j][i] = matrix[i][j];
+        }
+    }
+}
+
+void displayMatrix(int rows, int cols, int matrix[rows][cols])
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int rows, cols;
+
+    printf("Enter the number of rows and columns for the matrices: ");
+    scanf("%d %d", &rows, &cols);
+
+    int matrix1[rows][cols], matrix2[rows][cols], result[rows][cols], resultTranspose[cols][rows];
+
+    printf("Enter elements of matrix1:\n");
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            scanf("%d", &matrix1[i][j]);
+        }
+    }
+
+    printf("Enter elements of matrix2:\n");
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            scanf("%d", &matrix2[i][j]);
+        }
+    }
+
+    printf("Matrix1:\n");
+    displayMatrix(rows, cols, matrix1);
+
+    printf("Matrix2:\n");
+    displayMatrix(rows, cols, matrix2);
+
+    // Matrix addition
+    matrixAddition(rows, cols, matrix1, matrix2, result);
+    printf("Matrix Addition:\n");
+    displayMatrix(rows, cols, result);
+
+    // Matrix subtraction
+    matrixSubtraction(rows, cols, matrix1, matrix2, result);
+    printf("Matrix Subtraction:\n");
+    displayMatrix(rows, cols, result);
+
+    // Matrix multiplication
+    if (cols == rows)
+    {
+        matrixMultiplication(rows, cols, rows, cols, matrix1, matrix2, result);
+        printf("Matrix Multiplication:\n");
+        displayMatrix(rows, cols, result);
+    }
+    else
+    {
+        printf("Matrix multiplication is not possible.\n");
+    }
+
+    // Matrix transpose
+    matrixTranspose(rows, cols, matrix1, resultTranspose);
+    printf("Matrix1 Transpose:\n");
+    displayMatrix(cols, rows, resultTranspose);
+
+    matrixTranspose(rows, cols, matrix2, resultTranspose);
+    printf("Matrix2 Transpose:\n");
+    displayMatrix(cols, rows, resultTranspose);
+
+    return 0;
+}
