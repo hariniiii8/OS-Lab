@@ -1,0 +1,62 @@
+void proportionalScheduling(Process* processes, int n) {
+    int totalWeight = 0;
+    int* remainingBurst = (int*)malloc(n * sizeof(int));
+
+    // Calculate the total weight of all processes
+    for (int i = 0; i < n; i++) {
+        totalWeight += processes[i].weight;
+        remainingBurst[i] = processes[i].burst;
+    }
+
+    int currentTime = 0;
+    while (1) {
+        int selectedProcess = -1;
+        int maxProportionalShare = 0;
+
+        // Find the process with the highest proportional share
+        for (int i = 0; i < n; i++) {
+            if (remainingBurst[i] > 0) {
+                int proportionalShare = (remainingBurst[i] * processes[i].weight) / totalWeight;
+                if (proportionalShare > maxProportionalShare) {
+                    maxProportionalShare = proportionalShare;
+                    selectedProcess = i;
+                }
+            }
+        }
+
+        if (selectedProcess == -1)
+            break;
+
+        // Execute the selected process for one time unit
+        remainingBurst[selectedProcess]--;
+        currentTime++;
+
+        // Print the progress
+        printf("Time %d: Process %d (Burst %d)\n", currentTime, processes[selectedProcess].pid, remainingBurst[selectedProcess]);
+    }
+
+    free(remainingBurst);
+}
+
+int main() {
+    int n;
+    printf("Enter the number of processes: ");
+    scanf("%d", &n);
+
+    Process* processes = (Process*)malloc(n * sizeof(Process));
+
+    printf("Enter the weight and burst time for each process:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Process %d Weight: ", i + 1);
+        scanf("%d", &processes[i].weight);
+        printf("Process %d Burst Time: ", i + 1);
+        scanf("%d", &processes[i].burst);
+        processes[i].pid = i + 1;
+    }
+
+    printf("\nProportional Scheduling:\n");
+    proportionalScheduling(processes, n);
+
+    free(processes);
+    return 0;
+}
